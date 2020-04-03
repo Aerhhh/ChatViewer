@@ -1,0 +1,6 @@
+auth:
+  redis:
+    host: "localhost"
+    port: 6379
+
+serverId: "lobby"
