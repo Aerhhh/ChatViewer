@@ -1,0 +1,6 @@
+name: ChatViewer
+main: me.aerh.chatviewer.ChatViewerPlugin
+version: 1.0
+author: Aerh
+commands:
+  viewchat:
