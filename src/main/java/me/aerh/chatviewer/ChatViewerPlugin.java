@@ -14,13 +14,15 @@ import java.util.concurrent.Executors;
 public class ChatViewerPlugin extends JavaPlugin {
     private static ChatViewerPlugin instance;
     private Map<CommandSender, String> listeners = new HashMap<>();
-    ExecutorService executor = Executors.newFixedThreadPool(5);
+    private ExecutorService executor = Executors.newFixedThreadPool(5);
     private Jedis publisher;
     private Jedis subscriber;
 
     @Override
     public void onEnable() {
         instance = this;
+
+        saveDefaultConfig();
 
         if(getConfig().get("auth.redis") != null) {
             publisher = new Jedis(getConfig().getString("auth.redis.host"), getConfig().getInt("auth.redis.port"));

@@ -13,6 +13,6 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         String message = event.getMessage();
 
-        ChatViewerPlugin.getInstance().getPublisher().publish(ChatViewerPlugin.getInstance().getConfig().getString("serverId") + "_chat", "{\"message\":\"" + player.getName() + ": " + message + "\"}");
+        ChatViewerPlugin.getInstance().getPublisher().publish(ChatViewerPlugin.getInstance().getConfig().getString("serverId") + "_chat", "{\"message\":\"" + event.getFormat() + "\"}");
     }
 }
