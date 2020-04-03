@@ -38,6 +38,7 @@ public class ChatViewerPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        saveConfig();
         instance = null;
     }
 
