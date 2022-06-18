@@ -1,15 +1,12 @@
-package me.aerh.chatviewer.commands;
+package net.aerh.chatviewer.commands;
 
-import me.aerh.chatviewer.ChatViewerPlugin;
-import org.bukkit.Bukkit;
+import net.aerh.chatviewer.ChatViewerPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.json.JSONObject;
 import redis.clients.jedis.JedisPubSub;
-
-import java.util.logging.Level;
 
 public class ChatViewerCommand implements CommandExecutor {
 
@@ -19,20 +16,22 @@ public class ChatViewerCommand implements CommandExecutor {
             return false;
         }
 
-        ChatViewerPlugin.getInstance().getExecutor().execute(() ->
-                ChatViewerPlugin.getInstance().getSubscriber().subscribe(new JedisPubSub() {
+        ChatViewerPlugin instance = ChatViewerPlugin.getInstance();
+        instance.getExecutor().execute(() ->
+                instance.getSubscriber().subscribe(new JedisPubSub() {
                     @Override
                     public void onMessage(String channel, String incomingMessage) {
-                        Bukkit.getLogger().log(Level.INFO, "Redis Channel: " + channel + ", Message: " + incomingMessage);
-                        // message = json string
+                        if (ChatViewerPlugin.isDebug())
+                            instance.getLogger().info("Received Redis message from " + channel + ": " + incomingMessage);
+
                         JSONObject object = new JSONObject(incomingMessage);
+                        String playerName = object.getString("player");
                         String message = object.getString("message");
-                        // when a message is received from the other server
-                        sender.sendMessage(ChatColor.GRAY + "[V] " + ChatColor.RESET + "[" + channel + "] " + ChatColor.RESET + message);
+                        sender.sendMessage(ChatColor.GRAY + "[CV] " + ChatColor.RESET + "[" + channel + "] " + playerName + ": " + message);
                     }
                 }, args[0] + "_chat"));
-        ChatViewerPlugin.getInstance().getListeners().put(sender, args[0]);
+        instance.getListeners().put(sender, args[0]);
         sender.sendMessage(ChatColor.GREEN + "Watching chat in server '" + args[0] + "'");
-        return false;
+        return true;
     }
 }

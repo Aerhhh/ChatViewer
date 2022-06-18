@@ -1,6 +1,7 @@
 name: ChatViewer
-main: me.aerh.chatviewer.ChatViewerPlugin
+main: net.aerh.chatviewer.ChatViewerPlugin
 version: 1.0
 author: Aerh
 commands:
   viewchat:
+    description: View chat from another server running this plugin.

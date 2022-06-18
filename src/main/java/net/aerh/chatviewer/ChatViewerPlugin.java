@@ -1,7 +1,7 @@
-package me.aerh.chatviewer;
+package net.aerh.chatviewer;
 
-import me.aerh.chatviewer.commands.ChatViewerCommand;
-import me.aerh.chatviewer.listeners.ChatListener;
+import net.aerh.chatviewer.commands.ChatViewerCommand;
+import net.aerh.chatviewer.listeners.ChatListener;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
@@ -12,19 +12,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ChatViewerPlugin extends JavaPlugin {
+
     private static ChatViewerPlugin instance;
-    private Map<CommandSender, String> listeners = new HashMap<>();
-    private ExecutorService executor = Executors.newFixedThreadPool(5);
+    private final Map<CommandSender, String> listeners = new HashMap<>();
+    private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     private Jedis publisher;
     private Jedis subscriber;
 
     @Override
     public void onEnable() {
         instance = this;
-
         saveDefaultConfig();
 
-        if(getConfig().get("auth.redis") != null) {
+        if (getConfig().get("auth.redis") != null) {
             publisher = new Jedis(getConfig().getString("auth.redis.host"), getConfig().getInt("auth.redis.port"));
             subscriber = new Jedis(getConfig().getString("auth.redis.host"), getConfig().getInt("auth.redis.port"));
         } else {
@@ -36,10 +36,8 @@ public class ChatViewerPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
     }
 
-    @Override
-    public void onDisable() {
-        saveConfig();
-        instance = null;
+    public static boolean isDebug() {
+        return instance.getConfig().getBoolean("debug");
     }
 
     public Jedis getPublisher() {
