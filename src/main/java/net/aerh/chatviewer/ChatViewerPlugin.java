@@ -24,12 +24,16 @@ public class ChatViewerPlugin extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
 
-        if (getConfig().get("auth.redis") != null) {
-            publisher = new Jedis(getConfig().getString("auth.redis.host"), getConfig().getInt("auth.redis.port"));
-            subscriber = new Jedis(getConfig().getString("auth.redis.host"), getConfig().getInt("auth.redis.port"));
-        } else {
-            publisher = new Jedis();
-            subscriber = new Jedis();
+        String host = getConfig().getString("auth.redis.host", "localhost");
+        int port = getConfig().getInt("auth.redis.port", 6379);
+        publisher = new Jedis(host, port);
+        subscriber = new Jedis(host, port);
+
+        String username = getConfig().getString("auth.redis.username");
+        String password = getConfig().getString("auth.redis.password");
+        if (username != null && password != null) {
+            publisher.auth(username, password);
+            subscriber.auth(username, password);
         }
 
         getCommand("viewchat").setExecutor(new ChatViewerCommand());

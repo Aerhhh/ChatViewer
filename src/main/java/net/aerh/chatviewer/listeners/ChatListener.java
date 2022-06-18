@@ -7,6 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 public class ChatListener implements Listener {
 
     @EventHandler
@@ -17,7 +19,7 @@ public class ChatListener implements Listener {
         object.put("player", player.getName());
         object.put("message", message);
         ChatViewerPlugin.getInstance().getPublisher().publish(
-                ChatViewerPlugin.getInstance().getConfig().getString("serverId") + "_chat",
+                ChatViewerPlugin.getInstance().getConfig().getString("serverId").toLowerCase(Locale.ROOT) + "_chat",
                 object.toString()
         );
     }

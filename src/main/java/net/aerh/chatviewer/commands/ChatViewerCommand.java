@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.json.JSONObject;
 import redis.clients.jedis.JedisPubSub;
 
+import java.util.Locale;
+
 public class ChatViewerCommand implements CommandExecutor {
 
     public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
@@ -17,6 +19,7 @@ public class ChatViewerCommand implements CommandExecutor {
         }
 
         ChatViewerPlugin instance = ChatViewerPlugin.getInstance();
+        String serverId = args[0].toLowerCase(Locale.ROOT);
         instance.getExecutor().execute(() ->
                 instance.getSubscriber().subscribe(new JedisPubSub() {
                     @Override
@@ -29,9 +32,9 @@ public class ChatViewerCommand implements CommandExecutor {
                         String message = object.getString("message");
                         sender.sendMessage(ChatColor.GRAY + "[CV] " + ChatColor.RESET + "[" + channel + "] " + playerName + ": " + message);
                     }
-                }, args[0] + "_chat"));
-        instance.getListeners().put(sender, args[0]);
-        sender.sendMessage(ChatColor.GREEN + "Watching chat in server '" + args[0] + "'");
+                }, serverId + "_chat"));
+        instance.getListeners().put(sender, serverId);
+        sender.sendMessage(ChatColor.GREEN + "Watching chat in server '" + serverId + "'");
         return true;
     }
 }
