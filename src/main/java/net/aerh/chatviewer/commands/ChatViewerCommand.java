@@ -35,6 +35,6 @@ public class ChatViewerCommand implements CommandExecutor {
                 }, serverId + "_chat"));
         instance.getListeners().put(sender, serverId);
         sender.sendMessage(ChatColor.GREEN + "Watching chat in server '" + serverId + "'");
-        return true;
+        return false;
     }
 }
