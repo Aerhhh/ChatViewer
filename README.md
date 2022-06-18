@@ -7,7 +7,7 @@ Allows players to view messages from other servers running this plugin.
 - Download this plugin and drop it into your server's `plugins` folder.
 - Start the server and a config file will be created at `plugins/ChatViewer/config.yml`
 - Insert your Redis server information into the `auth` section of the config.
-  - If applicable, uncomment the `username` and `password` options and set them to your Redis server's username and password.
+  - If applicable, uncomment the `username` and `password` options and set them to your Redis server's username and password. (highly recommended!)
 - Edit the `serverId` to whatever you want the server to be named. For example, `minigame1` or `lobby`.
 - Restart the server.
 
