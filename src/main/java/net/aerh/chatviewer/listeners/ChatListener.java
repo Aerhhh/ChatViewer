@@ -19,7 +19,7 @@ public class ChatListener implements Listener {
         object.put("player", player.getName());
         object.put("message", message);
         ChatViewerPlugin.getInstance().getPublisher().publish(
-                ChatViewerPlugin.getInstance().getConfig().getString("serverId").toLowerCase(Locale.ROOT) + "_chat",
+                "chatviewer:" + ChatViewerPlugin.getInstance().getConfig().getString("serverId").toLowerCase(Locale.ROOT),
                 object.toString()
         );
     }
